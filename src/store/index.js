@@ -1,3 +1,5 @@
+// Configuração da store do redux
+
 import { createStore, compose } from 'redux';
 
 import reducers from './ducks';

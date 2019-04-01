@@ -1,3 +1,4 @@
+//  Types responsáveis por manipular os reducers da aplição
 export const Types = {
   ADD_TASK: 'ADD_TASK',
   REMOVE_TASK: 'REMOVE_TASK',
@@ -5,11 +6,13 @@ export const Types = {
   BACKWARD_TASK: 'BACKWARD_TASK',
 };
 
+// Estado inicial dos reducers da aplicação
 const INITIAL_STATE = {
   tasks: [],
   types: ['Backlog', 'To Do', 'In Progress', 'Testing', 'Done'],
 };
 
+// Retorna os estados da aplicação para a store
 export default function board(state = INITIAL_STATE, action) {
   switch (action.type) {
     case Types.ADD_TASK:
@@ -25,7 +28,7 @@ export default function board(state = INITIAL_STATE, action) {
       return state;
   }
 }
-
+// Action creators responsáveis por enviar informações aos reducers
 export const Creators = {
   newTask: task => ({
     type: Types.ADD_TASK,

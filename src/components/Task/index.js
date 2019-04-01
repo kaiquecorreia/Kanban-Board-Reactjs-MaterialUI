@@ -2,30 +2,36 @@ import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { withStyles } from '@material-ui/core/styles';
-
 import {
-  CardContent,
-  Typography,
-  IconButton,
-  Button,
-  CardActions,
-  Divider,
+  CardContent, Typography, IconButton, CardActions, Divider,
 } from '@material-ui/core';
 import { ArrowBack, ArrowForward, Delete } from '@material-ui/icons';
+import PropTypes, { shape } from 'prop-types';
 import { Creators as BoardActions } from '../../store/ducks/board';
 
-const styles = () => ({});
-
 class Task extends Component {
-  componentDidMount() {
-    console.log('');
-  }
+  static propTypes = {
+    board: PropTypes.shape().isRequired,
+    forwardTaskType: PropTypes.func.isRequired,
+    backTaskType: PropTypes.func.isRequired,
+    removeTask: PropTypes.func.isRequired,
+    description: PropTypes.string.isRequired,
+    task: PropTypes.arrayOf(
+      shape({
+        id: PropTypes.number,
+        type: PropTypes.string,
+        description: PropTypes.string,
+      }),
+    ).isRequired,
+  };
 
+  // Permite avançar o item da tarefa para outro estado
   forwardTask = (task) => {
-    const { tasks, types } = this.props.board;
+    const {
+      board: { tasks, types },
+    } = this.props;
     const { forwardTaskType } = this.props;
-    let type = types.findIndex(type => type === task.type);
+    let type = types.findIndex(typeFound => typeFound === task.type);
     if (type !== 4) {
       type += 1;
       const data = [
@@ -37,10 +43,13 @@ class Task extends Component {
     }
   };
 
+  // Permite voltar o item da tarefa para outro estado
   backTask = (task) => {
-    const { tasks, types } = this.props.board;
+    const {
+      board: { tasks, types },
+    } = this.props;
     const { backTaskType } = this.props;
-    let type = types.findIndex(type => type === task.type);
+    let type = types.findIndex(typeFound => typeFound === task.type);
     if (type !== 0) {
       type -= 1;
       const data = [
@@ -52,15 +61,18 @@ class Task extends Component {
     }
   };
 
+  // Deleta uma tarefa
   deleteTask = (task) => {
-    const { tasks, types } = this.props.board;
+    const {
+      board: { tasks },
+    } = this.props;
     const { removeTask } = this.props;
     const data = [...tasks.filter(obj => obj.id !== task.id)];
     removeTask(data);
   };
 
   render() {
-    const { description, task, deleteTask } = this.props;
+    const { description, task } = this.props;
 
     return (
       <Fragment>
@@ -93,4 +105,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(BoardActions, dispatch
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(Task));
+)(Task);

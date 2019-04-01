@@ -1,23 +1,32 @@
 import React, { Component } from 'react';
+// Realiza a validação das propriedades
 import PropTypes from 'prop-types';
+// Permite manipular os estilos dos componentes Material UI
 import { withStyles } from '@material-ui/core/styles';
-
+// Realiza a conexao com o redux e a store
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// Componentes importados do material UI
 import { Grid, Fab, TextField } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-
+// Action creators da store
 import { Creators as BoardActions } from '../../store/ducks/board';
-
+// Importa o componente que renderiza as colunas
 import ColumnBoard from '../../components/ColumnBoard';
 
+// Estilos aplicados nos componentes
 const styles = () => ({
   root: {
     marginTop: '10px',
   },
+  fab: {
+    marginRight: '35px;',
+    marginTop: '28px;',
+  },
 });
 
 class Board extends Component {
+  // Validação de props
   static propTypes = {
     board: PropTypes.shape({
       types: PropTypes.array.isRequired,
@@ -26,14 +35,12 @@ class Board extends Component {
     classes: PropTypes.shape().isRequired,
   };
 
+  // Responsável por capturar o textfield
   state = {
     taskInput: '',
   };
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
+  // Realiza a inserção de uma nova tarefa
   addNewTask = () => {
     const { taskInput } = this.state;
     const { newTask } = this.props;
@@ -46,7 +53,9 @@ class Board extends Component {
       board: { types },
       classes,
     } = this.props;
+
     const { taskInput } = this.state;
+
     return (
       <Grid className={classes.root} container spacing={40}>
         <Grid item xs={12}>
@@ -57,6 +66,7 @@ class Board extends Component {
               size="medium"
               color="primary"
               aria-label="Add"
+              className={classes.fab}
             >
               <Add />
               Adicionar Tarefa
