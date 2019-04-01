@@ -9,7 +9,7 @@ import Board from './pages/board';
 
 class App extends Component {
   componentDidMount() {
-    console.tron.log('teste');
+    console.log('teste');
   }
 
   render() {

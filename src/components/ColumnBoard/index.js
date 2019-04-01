@@ -1,24 +1,49 @@
-import React from 'react';
-import {
-  Card, CardContent, Typography, Button, CardActions,
-} from '@material-ui/core';
+import React, { Fragment } from 'react';
+import { Card, CardContent, Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import PropTypes from 'prop-types';
 
-const ColumnBoard = ({ typeColumns }) => (
-  <Card>
-    <CardContent>
-      <Typography variant="h5" component="h2">
-        {typeColumns}
-      </Typography>
-      <Typography color="textSecondary">adjective</Typography>
-      <Typography component="p">well meaning and kindly.</Typography>
-    </CardContent>
-    <CardActions>
-      <Button size="small">Learn More</Button>
-    </CardActions>
-  </Card>
-);
+import Task from '../Task';
 
-ColumnBoard.propTypes = {};
+import { Creators as BoardActions } from '../../store/ducks/board';
 
-export default ColumnBoard;
+const styles = () => ({});
+
+const ColumnBoard = ({ typeColumns, board }) => {
+  const taskType = board.tasks.filter(obj => obj.type === typeColumns);
+
+  return (
+    <Fragment>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            {typeColumns}
+          </Typography>
+        </CardContent>
+      </Card>
+      {taskType.map(task => (
+        <Task key={task.id} description={task.description} task={task} />
+      ))}
+    </Fragment>
+  );
+};
+
+ColumnBoard.propTypes = {
+  typeColumns: PropTypes.string.isRequired,
+  board: PropTypes.shape().isRequired,
+};
+
+const mapStateToProps = state => ({
+  board: state.board,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(BoardActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(ColumnBoard));
