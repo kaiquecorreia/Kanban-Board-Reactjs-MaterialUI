@@ -24,10 +24,10 @@ const ColumnBoard = ({ typeColumns, board }) => {
             {typeColumns}
           </Typography>
         </CardContent>
+        {taskType.map(task => (
+          <Task key={task.id} description={task.description} task={task} />
+        ))}
       </Card>
-      {taskType.map(task => (
-        <Task key={task.id} description={task.description} task={task} />
-      ))}
     </Fragment>
   );
 };

@@ -57,9 +57,9 @@ class Board extends Component {
     const { taskInput } = this.state;
 
     return (
-      <Grid className={classes.root} container spacing={40}>
+      <Grid className={classes.root} container justify="center" spacing={40}>
         <Grid item xs={12}>
-          <Grid container justify="center" alignItems="center">
+          <Grid container justify="center">
             <Fab
               onClick={this.addNewTask}
               variant="extended"

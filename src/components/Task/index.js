@@ -1,11 +1,14 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Reactotron from 'reactotron-react-js';
 
 import {
   CardContent, Typography, IconButton, CardActions, Divider,
 } from '@material-ui/core';
-import { ArrowBack, ArrowForward, Delete } from '@material-ui/icons';
+import {
+  ArrowBack, ArrowForward, Delete, ArrowUpward, ArrowDownward,
+} from '@material-ui/icons';
 import PropTypes, { shape } from 'prop-types';
 import { Creators as BoardActions } from '../../store/ducks/board';
 
@@ -25,6 +28,32 @@ class Task extends Component {
     ).isRequired,
   };
 
+  // Subir  prioridade de uma tarefa
+  upwardTask = (task) => {
+    const {
+      board: { tasks },
+    } = this.props;
+    const { upwardTaskType } = this.props;
+
+    const index = tasks.findIndex(obj => obj.id === task.id);
+    if (index !== 0) {
+      const uptask = tasks[index - 1];
+      tasks[index] = uptask;
+      tasks[index - 1] = task;
+      upwardTaskType(tasks);
+    }
+  };
+
+  // Descer prioridade de  uma tarefa
+  downWardTask = (task) => {
+    // const {
+    //   board: { tasks },
+    // } = this.props;
+    // const { removeTask } = this.props;
+    // const data = [...tasks.filter(obj => obj.id !== task.id)];
+    // removeTask(data);
+  };
+
   // Permite avançar o item da tarefa para outro estado
   forwardTask = (task) => {
     const {
@@ -38,7 +67,6 @@ class Task extends Component {
         ...tasks.filter(obj => obj.id !== task.id),
         { id: task.id, type: types[type], description: task.description },
       ];
-
       forwardTaskType(data);
     }
   };
@@ -77,7 +105,15 @@ class Task extends Component {
     return (
       <Fragment>
         <CardContent>
-          <Typography component="p">{description}</Typography>
+          <Typography component="p">
+            <IconButton onClick={() => this.upwardTask(task)}>
+              <ArrowUpward />
+            </IconButton>
+            {description}
+            <IconButton onClick={() => this.downWardTask(task)}>
+              <ArrowDownward />
+            </IconButton>
+          </Typography>
         </CardContent>
         <CardActions>
           <IconButton onClick={() => this.backTask(task)}>
